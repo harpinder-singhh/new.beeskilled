@@ -13,7 +13,6 @@
     <link rel="stylesheet" href="styles.css" />
     
     <style>
-        /* --- CERTIFICATE STYLES (Hidden from view) --- */
         #certificate-hidden-wrapper {
             position: absolute;
             top: 0;
@@ -342,7 +341,7 @@
             min-width: 130px;
         }
         .cert-medal {
-            width: 96px; height: 96px;
+            width: 80px; height: 80px;
             border-radius: 50%;
             background: radial-gradient(circle at 35% 30%, #2c1751, #1a0e33);
             border: 2px solid var(--c-gold);
@@ -352,14 +351,14 @@
             justify-content: center;
         }
         .cert-medal-inner {
-            width: 76px; height: 76px;
+            width: 64px; height: 64px;
             border-radius: 50%;
             border: 1px dashed rgba(232,184,75,0.7);
             display: flex;
             flex-direction: column;
             align-items: center;
             justify-content: center;
-            font-size: 7.5px;
+            font-size: 6.5px;
             font-weight: 700;
             letter-spacing: 0.5px;
             color: #f3f1fa;
@@ -367,7 +366,7 @@
         }
         .cert-medal-stars {
             color: var(--c-orange);
-            font-size: 8px;
+            font-size: 7px;
             margin-top: 2px;
             letter-spacing: 2px;
         }
@@ -378,9 +377,9 @@
         }
         .cert-ribbon-tail {
             width: 0; height: 0;
-            border-left: 11px solid transparent;
-            border-right: 11px solid transparent;
-            border-top: 34px solid var(--c-purple-dark);
+            border-left: 9px solid transparent;
+            border-right: 9px solid transparent;
+            border-top: 28px solid var(--c-purple-dark);
         }
         .cert-ribbon-tail.left { transform: rotate(-10deg); }
         .cert-ribbon-tail.right { transform: rotate(10deg); }
@@ -420,7 +419,6 @@
             margin-top: 2px;
         }
 
-        /* Utility */
         .hidden { display: none !important; }
     </style>
     
@@ -536,23 +534,16 @@
 
     <div id="certificate-hidden-wrapper">
         <div class="cert-container" id="certificate-element">
-
-            <!-- decorative diagonal band -->
             <div class="cert-band"></div>
             <div class="cert-band-line"></div>
             <div class="cert-band-line-thin"></div>
             <div class="cert-band-notch"></div>
-
-            <!-- dot patterns -->
             <div class="cert-dots cert-dots-top"></div>
             <div class="cert-dots cert-dots-bottom"></div>
-
-            <!-- frame -->
             <div class="cert-outer-border"></div>
             <div class="cert-corner cert-corner-tr"></div>
             <div class="cert-corner cert-corner-bl"></div>
 
-            <!-- logo -->
             <div class="cert-logo">
                 <img src="assets/logo_beeskilled-removebg-preview.png" class="cert-logo-img" alt="BeeSkilled">
                 <div>
@@ -573,14 +564,12 @@
 
                 <p class="cert-awarded-text">This internship program certificate is proudly awarded to</p>
 
-                <!-- DYNAMIC: filled by JS below from the student's actual submitted result -->
                 <div class="cert-name" id="cert-student-name">Student Name</div>
 
                 <div class="cert-divider"></div>
 
                 <p class="cert-body-text">
                     has completed the 6-Week online internship program in
-                    <!-- DYNAMIC: filled by JS below from the course the student actually took -->
                     <span class="cert-purple-text" id="cert-course-name">Web Development</span>
                     at <span class="cert-orange-text">BeeSkilled</span>
                 </p>
@@ -593,7 +582,6 @@
                     </div>
                     <div class="cert-footer-label-group">
                         <div class="cert-footer-label">Issue Date :</div>
-                        <!-- DYNAMIC: filled by JS below with today's real date -->
                         <div class="cert-footer-value" id="cert-issue-date">05 July 2026</div>
                     </div>
                 </div>
@@ -626,28 +614,21 @@
     <script>
         document.addEventListener("DOMContentLoaded", function() {
             
-            // --- UPDATED LOGIC: CHECK PASSING MARKS (15) ---
             function checkPassingCondition() {
                 const scoreElement = document.getElementById('result-score');
                 const scoreText = scoreElement.textContent || "";
-                
-                // Extract number from text (e.g. "Score: 16/20" -> 16)
                 const match = scoreText.match(/(\d+)/);
                 let score = 0;
                 if (match) {
                     score = parseInt(match[0]);
                 }
-
-                // Check condition: Must be 15 or more
                 return score >= 15;
             }
 
-            // Watch Result Page Visibility
             const resultSection = document.getElementById('result-section');
             const certBtn = document.getElementById('download-cert-btn');
             
             function handleResultPageShown() {
-                // If student passed (>= 15), show button, else hide
                 if (checkPassingCondition()) {
                     certBtn.classList.remove('hidden');
                 } else {
@@ -659,7 +640,6 @@
                 mutations.forEach(function(mutation) {
                     if (mutation.type === "attributes" && mutation.attributeName === "class") {
                         if (resultSection.classList.contains('active') || !resultSection.classList.contains('hidden')) {
-                            // Slight delay to ensure text is populated
                             setTimeout(handleResultPageShown, 100);
                         }
                     }
@@ -667,11 +647,9 @@
             });
             observer.observe(resultSection, { attributes: true });
 
-            // Generate PDF
             certBtn.addEventListener('click', function(e) {
                 e.preventDefault();
                 
-                // ===== REAL-TIME DATA PULLED FROM THE ACTUAL QUIZ RESULT =====
                 const rawName = document.getElementById('result-name').textContent || "";
                 const rawCourse = document.getElementById('result-course').textContent || "";
                 
@@ -680,19 +658,35 @@
 
                 if(!cleanName) cleanName = "Student Name";
 
-                // cleanName  -> exactly what the student typed on the entry form
-                // cleanCourse -> exactly the course card the student clicked "Start Test" on
-                document.getElementById('cert-student-name').textContent = cleanName;
+                const nameEl = document.getElementById('cert-student-name');
+                nameEl.textContent = cleanName;
                 document.getElementById('cert-course-name').textContent = cleanCourse;
 
-                // Issue date -> today's real date, generated fresh at click time (never hardcoded)
                 const issueDate = new Date().toLocaleDateString('en-GB', {
                     day: '2-digit', month: 'long', year: 'numeric'
                 });
                 document.getElementById('cert-issue-date').textContent = issueDate;
-                // ================================================================
 
                 const element = document.getElementById('certificate-element');
+                const wrapper = document.getElementById('certificate-hidden-wrapper');
+
+                wrapper.style.visibility = 'visible';
+                wrapper.style.position = 'fixed';
+                wrapper.style.top = '0';
+                wrapper.style.left = '0';
+                wrapper.style.zIndex = '-9999';
+
+                nameEl.style.whiteSpace = 'nowrap';
+                nameEl.style.fontSize = '58px';
+                
+                let currentSize = 58;
+                const maxWidth = 750;
+                
+                while (nameEl.scrollWidth > maxWidth && currentSize > 25) {
+                    currentSize -= 2;
+                    nameEl.style.fontSize = currentSize + 'px';
+                }
+
                 const opt = {
                     margin: 0,
                     filename: `BeeSkilled_Certificate_${cleanName.replace(/\s+/g, '_')}.pdf`,
@@ -702,20 +696,8 @@
                         useCORS: true,
                         allowTaint: true,
                         scrollY: 0,
-                        backgroundColor: '#0b0a10',
-                        // The certificate wrapper is visibility:hidden on the real page so
-                        // students never see it. html2canvas renders from a cloned copy of
-                        // the document, so we reveal it ONLY in that clone (the live page
-                        // stays hidden the whole time) — otherwise the clone is hidden too
-                        // and the capture comes out blank, which was causing the download
-                        // to silently fail/error.
-                        onclone: function(clonedDoc) {
-                            const wrapper = clonedDoc.getElementById('certificate-hidden-wrapper');
-                            if (wrapper) {
-                                wrapper.style.visibility = 'visible';
-                                wrapper.style.position = 'static';
-                            }
-                        }
+                        scrollX: 0,
+                        backgroundColor: '#0b0a10'
                     },
                     jsPDF: { unit: 'px', format: [900, 636], orientation: 'landscape' }
                 };
@@ -724,7 +706,6 @@
                 certBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Processing...';
                 certBtn.disabled = true;
 
-            
                 const logoImg = element.querySelector('.cert-logo-img');
                 const imageReady = (logoImg && !logoImg.complete)
                     ? new Promise(resolve => { logoImg.onload = resolve; logoImg.onerror = resolve; })
@@ -738,11 +719,19 @@
                 }).then(() => {
                     certBtn.innerHTML = originalText;
                     certBtn.disabled = false;
+                    
+                    wrapper.style.visibility = 'hidden';
+                    wrapper.style.position = 'absolute';
+                    wrapper.style.zIndex = '-1';
                 }).catch(err => {
-                    console.error("PDF Error:", err);
+                    console.error(err);
                     alert("Certificate download failed. Please try again in a moment.");
                     certBtn.innerHTML = originalText;
                     certBtn.disabled = false;
+                    
+                    wrapper.style.visibility = 'hidden';
+                    wrapper.style.position = 'absolute';
+                    wrapper.style.zIndex = '-1';
                 });
             });
         });
