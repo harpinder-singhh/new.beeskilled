@@ -1,20 +1,11 @@
-/* ============================================================
-   BeeSkilled Quiz Portal — Sunset Blaze Dark Theme
-   Fully redesigned to match BeeSkilled LMS design system
-   ============================================================ */
+
 
 @import url('https://fonts.googleapis.com/css2?family=Syne:wght@400;500;600;700;800&family=Nunito:ital,wght@0,300;0,400;0,500;0,600;0,700;1,400&display=swap');
 
-/* ── 1. Design Tokens ──────────────────────────────────────── */
-/* ============================================================
-   BeeSkilled Quiz Portal — Premium White Glassmorphism Theme
-   Matches index.html design system
-   All functionality preserved, only UI styling changed
-   ============================================================ */
 
 @import url('https://fonts.googleapis.com/css2?family=Syne:wght@400;500;600;700;800&family=Inter:ital,wght@0,300;0,400;0,500;0,600;0,700;1,400&display=swap');
 
-/* ── 1. Design Tokens ──────────────────────────────────────── */
+
 :root {
     --primary:         #7c3aed;
     --primary-dark:    #5b21b6;
