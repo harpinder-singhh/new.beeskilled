@@ -346,13 +346,10 @@
     }
 
     function handleIframeLoad() {
-      if (isSubmitted) {
-        document.getElementById('applicationForm').style.display = 'none';
-        document.getElementById('headerText').style.display = 'none';
-        document.getElementById('successMessage').style.display = 'block';
-        window.scrollTo({ top: 0, behavior: 'smooth' });
-      }
-    }
+  if (isSubmitted) {
+    window.location.href = "screen.html";
+  }
+}
   </script>
 </body>
 </html>
